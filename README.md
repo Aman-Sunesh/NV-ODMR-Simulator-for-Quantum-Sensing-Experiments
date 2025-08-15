@@ -3,7 +3,8 @@
 Fast, realistic **CW-ODMR** simulator for NV centers. Supports Lorentzian lines, ^14N hyperfine triplets, power broadening, Poisson shot noise, and clear referenced output — perfect for teaching, demos, and quick UI testing.
 
 - **Main script:** `nv_odmr_simulator.py`
-- **Core idea:** Two Lorentzian notches at $f_{\pm}\approx D\pm\gamma_e B_{\parallel}$ with optional hyperfine triplets. Width: $\mathrm{FWHM}=\mathrm{FWHM}_0\sqrt{1+s}$ (with $s$ the saturation parameter); depth (on resonance): $C_{\text{on}}=C_{\max}\frac{s}{1+s}$.
+- **Core idea:** Two Lorentzian notches at f<sub>±</sub> ≈ D ± γ<sub>e</sub> B<sub>∥</sub> with optional hyperfine triplets. Width: FWHM = FWHM<sub>0</sub> √(1+s) (with s the saturation parameter); depth (on resonance): C<sub>on</sub> = C<sub>max</sub> · s/(1+s).
+
 
 
 
