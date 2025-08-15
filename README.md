@@ -6,17 +6,15 @@ Fast, realistic **CW-ODMR** simulator for NV centers. Supports Lorentzian lines,
 - **Core idea:** Two Lorentzian notches at f<sub>±</sub> ≈ D ± γ<sub>e</sub> B<sub>∥</sub> with optional hyperfine triplets. Width: FWHM = FWHM<sub>0</sub> √(1+s) (with s the saturation parameter); depth (on resonance): C<sub>on</sub> = C<sub>max</sub> · s/(1+s).
 
 
-
-
 ---
 
 ## Features
-- **Two-line ODMR** at \(D \pm \gamma_e B_\parallel\)
-- **^14N hyperfine triplets** (2.16 MHz) with **peak-normalized** triplet so contrast semantics stay consistent
-- **Power broadening**: \(\mathrm{FWHM} = \mathrm{FWHM}_0\sqrt{1+s}\) (here `power_fac ≈ s`)
-- **Power-dependent depth** (optional): \(C_\text{on} = C_\max \dfrac{s}{1+s}\)
+- **Two-line ODMR** at D ± γ<sub>e</sub> B<sub>∥</sub>
+- **<sup>14</sup>N hyperfine triplets** (2.16 MHz) with **peak-normalized** triplet so contrast semantics stay consistent
+- **Power broadening**: FWHM = FWHM<sub>0</sub> √(1+s) (here `power_fac ≈ s`)
+- **Power-dependent depth** (optional): C<sub>on</sub> = C<sub>max</sub> · s/(1+s)
 - **Poisson shot noise** (toggle with `use_noise`)
-- **Referenced signal**: \((I_\text{off} - I_\text{on})/I_\text{off}\) cancels baseline/gain
+- **Referenced signal**: (I<sub>off</sub> − I<sub>on</sub>)/I<sub>off</sub> cancels baseline/gain
 
 ---
 
@@ -36,7 +34,7 @@ Fast, realistic **CW-ODMR** simulator for NV centers. Supports Lorentzian lines,
 **How to generate:**
 - *One dip:* set `B_mag = 0.0` (Tesla)
 - *Two dips:* set `B_mag ≈ 2e-3` to `3e-3` (Tesla) with `theta = 0`  
-  Separation \(\Delta f \approx 2\gamma_e B_\parallel\).  
+- Separation &Delta;f &approx; 2&nbsp;γ<sub>e</sub> B<sub>∥</sub>.
 - *Noise on/off:* toggle `use_noise = True/False`
 
 ---
@@ -87,38 +85,37 @@ Fast, realistic **CW-ODMR** simulator for NV centers. Supports Lorentzian lines,
 | `use_noise` | Poisson noise toggle | True/False |
 
 **Derived knobs**
-- **Centers:** \(f_\pm = D \pm \gamma_e B_\parallel\), with \(B_\parallel = B\cos\theta\).  
-- **Width:** \(\mathrm{FWHM} = \mathrm{FWHM}_0\sqrt{1+s}\) with \(s \approx\) `power_fac`.  
-- **Depth:** \(C_\text{on} = C_\max \dfrac{s}{1+s}\) (use fixed contrast if you prefer).
+- **Centers:** f<sub>±</sub> = D ± γ<sub>e</sub> B<sub>∥</sub>, with B<sub>∥</sub> = B · cos θ.  
+- **Width:** FWHM = FWHM<sub>0</sub> √(1+s) with s ≈ `power_fac`.  
+- **Depth:** C<sub>on</sub> = C<sub>max</sub> · s/(1+s) (use fixed contrast if you prefer).
 
 ---
 
 ## Theory-in-one-minute
-- Laser pumping makes \(|0\rangle\) **bright**; \(|\pm1\rangle\) are **dimmer**.  
-- On resonance, MW drives \(|0\rangle \leftrightarrow |\pm1\rangle\) → fewer photons → a **dip**.  
-- Steady-state OBE ⇒ **Lorentzian** response in frequency; width set by \(T_2\) and power; depth saturates with power.  
-- Hyperfine (\(I=1\)) splits each line into a **triplet** at \(\pm A_\parallel\).
+- Laser pumping makes |0⟩ **bright**; |±1⟩ are **dimmer**.  
+- On resonance, MW drives |0⟩ ↔ |±1⟩ → fewer photons → a **dip**.  
+- Steady-state OBE ⇒ **Lorentzian** response in frequency; width set by T<sub>2</sub> and power; depth saturates with power.  
+- Hyperfine (I = 1) splits each line into a **triplet** at ±A<sub>∥</sub>.
 
 ---
 
 ## SNR / Sampling Tips
 - Expected counts per point: `I0_total = cps * read_time * frames * averages`  
-- Referenced noise (shot-noise limit): \(\sigma_\text{ref} \approx \sqrt{2 / I0\_total}\)  
-- Aim for **SNR** \(=\) peak contrast / \(\sigma_\text{ref}\) ≥ 5 for nice plots.  
-- Frequency resolution: \(\mathrm{df} = \dfrac{f_\text{end}-f_\text{start}}{\text{steps}-1}\). Target **≥ 8–10 points per FWHM**.
+- Referenced noise (shot-noise limit): σ<sub>ref</sub> ≈ √(2 / I0_total)  
+- Aim for **SNR** = (peak contrast) / σ<sub>ref</sub> ≥ 5 for nice plots.  
+- Frequency resolution: df = (f_end − f_start)/(steps − 1). Target **≥ 8–10 points per FWHM**.
 
 ---
 
 ## Reproduce the gallery
-**One dip (B=0), noisy & clean**
+**One dip (B = 0), noisy & clean**
 ```python
 B_mag = 0.0; use_noise = True   # noisy
 # B_mag = 0.0; use_noise = False  # clean
 ```
 
-**Two dips (B≈2 mT), noisy & clean**
+**Two dips (B ≈ 2–3 mT), noisy & clean**
 ```python
 B_mag = 3e-3; theta = 0; use_noise = True    # noisy
 # B_mag = 3e-3; theta = 0; use_noise = False # clean
 ```
----
