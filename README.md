@@ -1,4 +1,4 @@
-# NV-ODMR-Simulator-for-Quantum-Sensing-Experiments
+# NV ODMR Simulator for Quantum Sensing Experiments
 
 Fast, realistic **CW-ODMR** simulator for NV centers. Supports Lorentzian lines, ^14N hyperfine triplets, power broadening, Poisson shot noise, and clear referenced output — perfect for teaching, demos, and quick UI testing.
 
