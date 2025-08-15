@@ -4,27 +4,29 @@ import math
 
 rng = np.random.default_rng(0)  # for shot noise & reproducibility
 
-baseline_slope = 0.0        
-read_time = 2e-5
-dynamic_steps = 400
-frames = 10000  
-averages = 1
-cps = 200_000
-use_noise = True
+# ---------- Acquisition / Integration Controls ----------
+baseline_slope = 0.0        # unitless per GHz: small linear tilt of baseline vs frequency (0.0 = flat)
+read_time = 2e-5            # seconds per read gate (longer -> more counts -> lower noise)
+dynamic_steps = 400         # number of frequency points in the sweep (df = (f_end - f_start)/(steps-1))
+frames = 10000              # repeats per frequency point (more -> more counts -> lower noise)
+averages = 1                # outer averages of the whole sweep (rarely needed; multiplies counts)
+cps = 200_000               # counts per second (MW OFF baseline brightness of your setup)
+use_noise = True            # True: add Poisson shot noise; False: ideal noiseless traces
 
+# ---------- Physics / Sweep Parameters ----------
+f_start = 2.60e9            # sweep start frequency in Hz
+f_end   = 3.00e9            # sweep end frequency in Hz
+D_mag   = 2.870e9           # zero-field splitting D (Hz) for NV ground state (~2.870 GHz)
+gamma_e = 28.0e9            # electron gyromagnetic ratio in Hz/T (~28 GHz/T)
+theta   = 0                 # angle (degrees) between B field and NV axis (0° = aligned)
+C_max   = 0.04              # max fractional contrast at high power (saturation limit)
+A_PARALLEL = 2.16e6         # 14N hyperfine splitting A∥ in Hz (~2.16 MHz spacing)
+hyperfine_on = True         # include hyperfine triplets (three lines per transition)
 
-f_start = 2.60e9
-f_end = 3.00e9
-D_mag = 2.870e9
-gamma_e = 28.0e9
-theta = 0
-C_max = 0.04
-A_PARALLEL = 2.16e6   # ^14N hyperfine (Hz)
-hyperfine_on = True
-fwhm0    = 8e6 
-power_fac = 1
-B_mag = 0 # 3e-3
-B_par = B_mag * math.cos(theta * (math.pi/180))
+fwhm0   = 8e6               # low-power Lorentzian FWHM in Hz (~1/(pi*T2)); sets base linewidth
+power_fac = 1               # saturation parameter proxy s (dimensionless): linewidth → fwhm0*sqrt(1+s)
+B_mag = 0.0                 # Tesla. 0 → single dip at D; ~2e-3–3e-3 T (θ=0°) → two dips split by ~2*γe*B∥
+B_par = B_mag * math.cos(math.radians(theta))  # Tesla: projection of B along NV axis; sets dip positions
 
 f = np.linspace(f_start, f_end, dynamic_steps)
 
@@ -37,7 +39,7 @@ f_plus = D_mag + (gamma_e * B_par)
 
 s = float(power_fac)                       
 fwhm = fwhm0 * np.sqrt(1.0 + s)
-C_on = C_max * (s / (1.0 + s)) # depth saturates with power
+C_on = C_max * (s / (1.0 + s))   # depth saturates with power
 
 def triplet(f, fc, A, fwhm):
     # peak-normalize the triplet so its max is 1.0
@@ -105,3 +107,4 @@ print(f"FWHM used: {fwhm/1e6:.2f} MHz;  C_on={C_on:.3f}")
 df = (f_end - f_start) / (dynamic_steps - 1)
 print(f"Points per FWHM: {fwhm/df:.1f} (aim ≥ 8–10)")
 print(f"Peak referenced contrast (approx): {ref.max():.4f}")
+
