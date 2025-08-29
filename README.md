@@ -6,7 +6,7 @@ Fast, realistic **CW-ODMR** simulator for NV centers. Supports Lorentzian lines,
 - **Core idea:** Two Lorentzian notches at f<sub>±</sub> ≈ D ± γ<sub>e</sub> B<sub>∥</sub> with optional hyperfine triplets. Width: FWHM = FWHM<sub>0</sub> √(1+s) (with s the saturation parameter); depth (on resonance): C<sub>on</sub> = C<sub>max</sub> · s/(1+s).
 
 
----
+--- 
 
 ## Features
 - **Two-line ODMR** at D ± γ<sub>e</sub> B<sub>∥</sub>
